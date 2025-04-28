@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker Container Guide</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --text-color: #1f2937;
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        h3 {
+            color: var(--text-color);
+            margin: 1.5rem 0 1rem;
+            font-size: 1.4rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        ul, ol {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .code-block {
+            background-color: #1e293b;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+            font-family: 'Courier New', Courier, monospace;
+            overflow-x: auto;
+        }
+
+        .command {
+            color: #60a5fa;
+        }
+
+        .note {
+            background-color: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Docker Container Guide</h1>
+            <p>Learn how to containerize and deploy your web applications with Docker</p>
+        </header>
+
+        <div class="card">
+            <h2>What is Docker?</h2>
+            <p>Docker is a platform that allows you to develop, ship, and run applications in isolated environments called containers. Containers package an application with all its dependencies, ensuring it runs consistently across different environments.</p>
+        </div>
+
+        <div class="card">
+            <h2>Key Concepts</h2>
+            
+            <h3>1. Container</h3>
+            <ul>
+                <li>A lightweight, standalone, executable package that includes everything needed to run an application</li>
+                <li>Isolated from other containers and the host system</li>
+                <li>More efficient than virtual machines as they share the host OS kernel</li>
+            </ul>
+
+            <h3>2. Image</h3>
+            <ul>
+                <li>A read-only template used to create containers</li>
+                <li>Contains the application code, runtime, libraries, and dependencies</li>
+                <li>Can be built from a Dockerfile or pulled from a registry like Docker Hub</li>
+            </ul>
+
+            <h3>3. Dockerfile</h3>
+            <ul>
+                <li>A text file containing instructions for building a Docker image</li>
+                <li>Defines the base image, dependencies, and configuration</li>
+                <li>Each instruction creates a new layer in the image</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>Getting Started</h2>
+            
+            <h3>1. Install Docker</h3>
+            <p>Download and install Docker Desktop from <a href="https://www.docker.com/products/docker-desktop" target="_blank">Docker's official website</a></p>
+
+            <h3>2. Basic Commands</h3>
+            <div class="code-block">
+                <span class="command"># Pull an image from Docker Hub</span><br>
+                docker pull nginx<br><br>
+                
+                <span class="command"># List running containers</span><br>
+                docker ps<br><br>
+                
+                <span class="command"># Run a container</span><br>
+                docker run -d -p 80:80 nginx<br><br>
+                
+                <span class="command"># Build an image from a Dockerfile</span><br>
+                docker build -t my-image .
+            </div>
+
+            <h3>3. Containerizing a Web Application</h3>
+            <p>Create a Dockerfile in your project directory:</p>
+            <div class="code-block">
+                # Use the official Nginx image as base<br>
+                FROM nginx:alpine<br><br>
+                
+                # Copy your HTML files to the Nginx web root directory<br>
+                COPY . /usr/share/nginx/html<br><br>
+                
+                # Expose port 80 for web traffic<br>
+                EXPOSE 80
+            </div>
+
+            <div class="note">
+                <strong>Note:</strong> Make sure Docker Desktop is running before executing any Docker commands.
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Best Practices</h2>
+            <ul>
+                <li>Use official base images when possible</li>
+                <li>Keep images small by removing unnecessary files</li>
+                <li>Use multi-stage builds for complex applications</li>
+                <li>Don't run containers as root</li>
+                <li>Use environment variables for configuration</li>
+                <li>Implement proper logging</li>
+                <li>Use Docker Compose for multi-container applications</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html> 
